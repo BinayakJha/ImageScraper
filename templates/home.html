@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/style.css">
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <link href="http://fonts.cdnfonts.com/css/euclid-circular-a?styles=100037,100034,100036,100039,100031"
+        rel="stylesheet">
+    <title>Image Extractor</title>
+    <script>
+        setTimeout(function () {
+            const modal = document.getElementById("error-modal");
+            // hide modal after 3 seconds
+            modal.style.display = "none";
+        }, 3500);
+
+    </script>
+</head>
+
+
+
+<header class="text-gray-400 bg-gray-900 body-font"
+    style="font-family: 'Euclid Circular A', sans-serif; background-color: #252331;">
+    <div class=" container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+        <a class="flex title-font font-medium items-center text-white mb-4 md:mb-0">
+            <span class="ml-3 text-xl">Img Extractor (Beta)</span>
+        </a>
+        <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
+            <a href="/" class="mr-5 hover:text-white hover:cursor-pointer">Home</a>
+            
+    </div>
+</header>
+
+<body style="font-family: 'Euclid Circular A', sans-serif;">
+
+    <!-- error popup modal -->
+    {% if messages %}
+    {% for msg in messages %}
+    <div id="error-modal" class="flex animate-pulse w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg
+       fixed left-8 top-8">
+        <div class="flex items-center justify-center w-12 stroke-slate-900">
+            <svg class="w-6 h-6 text-slate-800 fill-current" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M20 3.33331C10.8 3.33331 3.33337 10.8 3.33337 20C3.33337 29.2 10.8 36.6666 20 36.6666C29.2 36.6666 36.6667 29.2 36.6667 20C36.6667 10.8 29.2 3.33331 20 3.33331ZM21.6667 28.3333H18.3334V25H21.6667V28.3333ZM21.6667 21.6666H18.3334V11.6666H21.6667V21.6666Z" />
+            </svg>
+        </div>
+
+        <div class="px-4 py-2 -mx-3">
+            <div class="mx-3">
+                <span class="font-semibold text-slate-800 ">Error</span>
+                <p class="text-sm text-gray-600 ">{{msg}}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+    <!-- error popup modal -->
+
+    <style>
+        :root{
+            --page-background:  rgb(240, 245, 247);
+            --page-color: black;
+            --search-form: #fff;
+            --snippet-color: white;
+            --link-color: #1841D2;
+            --input-color: white;
+            --border-color: none;
+        }
+        .searchform-container {
+          margin-left: 0;
+          width: 100%;
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+    
+        #searchform {
+          position: relative;
+          display: flex;
+          margin-bottom: 10px;
+          max-width: inherit;
+          align-items: center;
+          z-index: 3;
+          height: 56px !important;
+          width: 90%;
+          border: var(--border-color);
+          border-radius: 8px;
+          box-shadow: 0px 2px 8px rgb(37 44 54 / 25%);
+          background-color: var(--input-color);
+          transition: all 0.3s ease-in-out;
+        }
+    
+        #search-icon.no-display {
+          display: flex !important;
+          transition: all 0.1s ease-in-out;
+        }
+    
+        #search-icon {
+          opacity: 0.5 !important;
+          transition: all 0.1s ease-in-out;
+        }
+    
+        #search-icon,
+        #back-arrow {
+          display: flex;
+          height: 100%;
+          justify-content: center;
+          align-items: center;
+          min-width: 46px !important;
+          order: 1;
+          z-index: 3;
+          color: var(--page-color);
+          transition: all 0.1s ease-in-out;
+        }
+    
+        #hero-field {
+          flex-grow: 1;
+          width: inherit;
+          height: 100%;
+          order: 2;
+          border: none;
+          outline: none;
+          box-shadow: none;
+          color: var(--page-color);
+          background-color: var(--input-color);
+          border-radius: 8px;
+          border-top-left-radius: 10px;
+          border-bottom-left-radius: 10px;
+          padding: 8px 18px;
+          padding-left: 0px !important;
+          transition: all 0.3s ease-in-out;
+        }
+    
+        .form-input {
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
+          background: var(--input-color);
+          background-image: none;
+          border: .05rem solid #bcc3ce;
+          border-radius: .1rem;
+          color: var(--page-color);
+          display: block;
+          font-size: .8rem;
+          height: 1.8rem;
+          line-height: 1.2rem;
+          max-width: 100%;
+          outline: 0;
+          padding: .25rem .4rem;
+          position: relative;
+          transition: .2s, border .2s, box-shadow .2s, color .2s;
+          width: 100%;
+          transition: all 0.3s ease-in-out;
+        }
+    
+        @media screen and (min-width: 1000px) {
+          .searchform-container {
+            padding-left: 5rem;
+            padding-right: 5rem;
+          }
+    
+          #searchform {
+            width: 62%;
+            box-shadow: 0px 2px 8px rgb(37 44 54 / 25%);
+          }
+        }
+      </style>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+        
+            .fa-search {
+              font-size: 20px;
+              color: red;
+            }
+        
+            .fa-search:hover {
+              color: white;
+            }
+        
+            .buttons {
+              margin-top: 30px;
+            }
+        
+            .theme-toggler {
+              position: absolute !important;
+            }
+          </style>
+    <section class="text-gray-400 body-font" style="background-color: #252331;padding: 7.5rem 2.5rem;">
+        <div class="container">
+            <div class="row">
+                <b><h1 style="font-size:3rem; font-family: 'Poppins',sans-serif;margin-bottom: 1rem;">
+                <center>Image Extractor</center></b>
+            </h1>
+              <div class="searchform-container">
+                <center>
+                  <form class="form" method="post" id="searchform">
+                    <span id="search-icon" class="no-display">
+                      <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                          d="M6.57212 13.1442C2.94254 13.1442 0 10.2016 0 6.57173C0 2.94248 2.94268 0 6.57212 0C10.2016 0 13.1442 2.94248 13.1442 6.57173C13.1442 8.05658 12.6519 9.42642 11.8215 10.5269L16.3528 15.0581C16.7103 15.4156 16.7103 15.9952 16.3528 16.3527C15.9953 16.7102 15.4157 16.7102 15.0582 16.3527L10.527 11.8215C9.42657 12.6519 8.05682 13.1442 6.57212 13.1442ZM6.57212 11.2665C3.97956 11.2665 1.87775 9.16463 1.87775 6.57184C1.87775 3.97952 3.97966 1.87775 6.57212 1.87775C9.16458 1.87775 11.2665 3.97952 11.2665 6.57184C11.2665 9.16463 9.16468 11.2665 6.57212 11.2665Z"
+                          fill="url(#paint0_linear)"></path>
+                        <defs>
+                          <linearGradient id="paint0_linear" x1="16.6209" y1="16.6208" x2="-1.90605" y2="3.18655"
+                            gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#BF14A2"></stop>
+                            <stop offset="1" stop-color="#F73A1C"></stop>
+                          </linearGradient>
+                        </defs>
+                      </svg>
+                    </span>
+                    {% csrf_token %}
+                    <input name="hero-field" id='hero-field' type="text" class="form-input"
+                        placeholder="Eg: https://example.com" name="q"
+                      autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Search"
+                      title="Search" aria-autocomplete="both" aria-haspopup="false" maxlength="2048" autofocus="">
+                    <input name="source" value="web" type="hidden">
+                    <div id="autocomplete" class="svelte-ir7f0d"></div>
+                    <!-- add suggestion here -->
+                   
+
+                  </form>
+                  <div id="suggestion" class="svelte-ir7f0d" style="padding-top: 10px;">
+                    <p>
+
+                        Paste a url at top and press enter to extract images from the webpage.
+                    </p>
+                </div>
+                </center>
+              </div>
+              <br>
+            </div>
+          </div>
+       
+                    <!-- form -->
+                    <!-- <form action="" method="post" class=" w-full md:justify-start justify-center items-end">
+                        <div class="relative mr-4 ml-4 md:w-5 lg:w-6 xl:w-10">
+                            {% csrf_token %}
+                            <label for="hero-field" class="leading-7 text-sm text-gray-400">Url of Website</label>
+                            <center> <input type="text" id="hero-field" name="hero-field" placeholder="Eg: https://example.com"
+                                class="w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-green-900 focus:bg-transparent focus:border-green-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"></center>
+                        </div>
+                         <br>
+                        <center><button type="submit"
+                            class=" text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-lg">Extract</button></center>
+                    </form> -->
+                    <!-- form end -->
+              
+    </section>
+
+
+    <!-- image container after iterating over image links   -->
+    <!-- title -->
+
+
+
+    <div class="px-10 pb-10 flex-1">
+        <div
+            class="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 3xl:grid-cols-7 gap-6">
+
+            {% for image_url, file_name, file_format in ImagesAndFilenames %}
+
+            <div>
+                <div
+                    class="bg-white rounded-md shadow-green-100 h-full flex flex-col justify-between app-image relative transition-all duration-200 transform hover:-translate-y-2 hover:scale-105 hover:z-10 hover:shadow-xl focus-within:z-20">
+                    <div>
+                        <div class="w-full relative" style="padding-bottom: 100;">
+                            <div class="left-0 w-full h-full p-6 flex-1" style="height: 217px;">
+                                <div class="rounded-md w-full h-full overflow-hidden ">
+                                    <img src="{{ image_url }}" alt="" srcset=""
+                                        class="object-scale-down h-full w-full cursor-pointer imggg">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-6 pb-4 -mt-2">
+                            <div class="flex justify-between overflow-hidden">
+                                <div class="font-normal overflow-hidden">{{ file_name }}</div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-4 py-3 border-t border-gray-200 flex flex-wrap items-center justify-between">
+                        <div>
+                            <!-- OPEN IMAGE LINK BUTTON and ICON -->
+                            <a href="{{ image_url }}" class="button p-0 h-10 w-10 is-text" target="_blank">
+                                <button type="button" class="button p-0 h-10 w-10 is-text" id="down">
+                                    <span>
+                                        <div class="app-icon h-6 w-6">
+                                            <svg fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                width="24px" height="24px">
+                                                <path
+                                                    d="M 5 3 C 3.9069372 3 3 3.9069372 3 5 L 3 19 C 3 20.093063 3.9069372 21 5 21 L 19 21 C 20.093063 21 21 20.093063 21 19 L 21 12 L 19 12 L 19 19 L 5 19 L 5 5 L 12 5 L 12 3 L 5 3 z M 14 3 L 14 5 L 17.585938 5 L 8.2929688 14.292969 L 9.7070312 15.707031 L 19 6.4140625 L 19 10 L 21 10 L 21 3 L 14 3 z" />
+                                            </svg>
+                                        </div>
+                                    </span>
+                                </button>
+                            </a>
+
+                            <!-- OPEN IMAGE LINK -->
+                            <button type="button" class="button p-0 h-10 w-10 is-text">
+                                <span>
+                                    <div class="app-icon h-6 w-6">
+                                    </div>
+                                </span>
+                            </button>
+                            <!-- download link -->
+                            <!-- when the button is clicked prompt save as dialog -->
+                            <a href="{{ image_url }}" class="button p-0 h-10 w-10 is-text" download>
+                                <button type="button" class="button p-0 h-10 w-10 is-text" id="down">
+                                    <span>
+                                        <div class="app-icon h-6 w-6">
+                                            <svg fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                width="24px" height="24px">
+                                                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
+                                            </svg>
+                                        </div>
+                                    </span>
+                                </button>
+                            </a>
+
+                        </div>
+                        <div>
+                            <div
+                                class="dropdown dropdown-menu-animation is-bottom-left is-mobile-modal overflow-hidden w-9">
+                                <span class="bg-green-50 text-gray-600 p-1 rounded-md">{{ file_format }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+   
+   <br><br><br><br>
+
+
+</body>
+
+
+<footer class="text-gray-600 body-font">
+    <div class="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
+        <a class="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
+            <img src="https://binayakjha.com.np/images/profile2.jpg" alt="" srcset=""
+                class="w-h-20 h-20 text-white p-2 stroke-slate-400 rounded-full">
+            <span class="ml-3 text-xl">Image Extractor</span>
+        </a>
+        <p class="text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4">
+            Binayak Jha
+        </p>
+        <span class="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
+            <a class="text-gray-500" href="https://www.facebook.com/binayak.jha.py/" target="_blank">
+                <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5"
+                    viewBox="0 0 24 24">
+                    <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path>
+                </svg>
+            </a>
+            <a class="ml-3 text-gray-500" href="https://www.instagram.com/binayakjha.py/" target="_blank">
+                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    class="w-5 h-5" viewBox="0 0 24 24">
+                    <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01"></path>
+                </svg>
+            </a>
+            <a class="ml-3 text-gray-500" href="https://www.linkedin.com/in/binayak-jha/" target="_blank">
+                <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="0" class="w-5 h-5" viewBox="0 0 24 24">
+                    <path stroke="none"
+                        d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z">
+                    </path>
+                    <circle cx="4" cy="4" r="2" stroke="none"></circle>
+                </svg>
+            </a>
+        </span>
+    </div>
+</footer>
+
+</html>
