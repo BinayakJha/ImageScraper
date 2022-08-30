@@ -5,15 +5,25 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Scrape images of web pages quickly just by entering url">
+ 
+  {% load static %}
+<!--   for twitter -->
+  <meta name="twitter:title" content="Image Extractor">
+  <meta name="twitter:description" content=" Scrape images of web pages quickly just by entering url">
+  <meta name="twitter:image" content="{% static 'full.jpeg' %}">
+  <meta name="twitter:card" content="{% static 'full.jpeg' %}">
+<!--   twitter end -->
+   <meta property="og:image" content = "{% static 'full.jpeg' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     <link rel="stylesheet" href="../static/style.css">
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <link href="http://fonts.cdnfonts.com/css/euclid-circular-a?styles=100037,100034,100036,100039,100031"
         rel="stylesheet">
     <title>Image Extractor</title>
+<!--   for hiding the model -->
     <script>
         setTimeout(function () {
             const modal = document.getElementById("error-modal");
-            // hide modal after 3 seconds
             modal.style.display = "none";
         }, 3500);
 
@@ -34,7 +44,7 @@
     </div>
 </header>
 
-<body style="font-family: 'Euclid Circular A', sans-serif;">
+<body >
 
     <!-- error popup modal -->
     {% if messages %}
@@ -59,134 +69,8 @@
     {% endif %}
     <!-- error popup modal -->
 
-    <style>
-        :root{
-            --page-background:  rgb(240, 245, 247);
-            --page-color: black;
-            --search-form: #fff;
-            --snippet-color: white;
-            --link-color: #1841D2;
-            --input-color: white;
-            --border-color: none;
-        }
-        .searchform-container {
-          margin-left: 0;
-          width: 100%;
-          padding-left: 1rem;
-          padding-right: 1rem;
-        }
     
-        #searchform {
-          position: relative;
-          display: flex;
-          margin-bottom: 10px;
-          max-width: inherit;
-          align-items: center;
-          z-index: 3;
-          height: 56px !important;
-          width: 90%;
-          border: var(--border-color);
-          border-radius: 8px;
-          box-shadow: 0px 2px 8px rgb(37 44 54 / 25%);
-          background-color: var(--input-color);
-          transition: all 0.3s ease-in-out;
-        }
-    
-        #search-icon.no-display {
-          display: flex !important;
-          transition: all 0.1s ease-in-out;
-        }
-    
-        #search-icon {
-          opacity: 0.5 !important;
-          transition: all 0.1s ease-in-out;
-        }
-    
-        #search-icon,
-        #back-arrow {
-          display: flex;
-          height: 100%;
-          justify-content: center;
-          align-items: center;
-          min-width: 46px !important;
-          order: 1;
-          z-index: 3;
-          color: var(--page-color);
-          transition: all 0.1s ease-in-out;
-        }
-    
-        #hero-field {
-          flex-grow: 1;
-          width: inherit;
-          height: 100%;
-          order: 2;
-          border: none;
-          outline: none;
-          box-shadow: none;
-          color: var(--page-color);
-          background-color: var(--input-color);
-          border-radius: 8px;
-          border-top-left-radius: 10px;
-          border-bottom-left-radius: 10px;
-          padding: 8px 18px;
-          padding-left: 0px !important;
-          transition: all 0.3s ease-in-out;
-        }
-    
-        .form-input {
-          -webkit-appearance: none;
-          -moz-appearance: none;
-          appearance: none;
-          background: var(--input-color);
-          background-image: none;
-          border: .05rem solid #bcc3ce;
-          border-radius: .1rem;
-          color: var(--page-color);
-          display: block;
-          font-size: .8rem;
-          height: 1.8rem;
-          line-height: 1.2rem;
-          max-width: 100%;
-          outline: 0;
-          padding: .25rem .4rem;
-          position: relative;
-          transition: .2s, border .2s, box-shadow .2s, color .2s;
-          width: 100%;
-          transition: all 0.3s ease-in-out;
-        }
-    
-        @media screen and (min-width: 1000px) {
-          .searchform-container {
-            padding-left: 5rem;
-            padding-right: 5rem;
-          }
-    
-          #searchform {
-            width: 62%;
-            box-shadow: 0px 2px 8px rgb(37 44 54 / 25%);
-          }
-        }
-      </style>
-        <style>
-            @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-        
-            .fa-search {
-              font-size: 20px;
-              color: red;
-            }
-        
-            .fa-search:hover {
-              color: white;
-            }
-        
-            .buttons {
-              margin-top: 30px;
-            }
-        
-            .theme-toggler {
-              position: absolute !important;
-            }
-          </style>
+       
     <section class="text-gray-400 body-font" style="background-color: #252331;padding: 7.5rem 2.5rem;">
         <div class="container">
             <div class="row">
@@ -196,6 +80,7 @@
               <div class="searchform-container">
                 <center>
                   <form class="form" method="post" id="searchform">
+                     {% csrf_token %}
                     <span id="search-icon" class="no-display">
                       <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -215,10 +100,11 @@
                         placeholder="Eg: https://example.com" name="q"
                       autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Search"
                       title="Search" aria-autocomplete="both" aria-haspopup="false" maxlength="2048" autofocus="">
+                     {% csrf_token %}
                     <input name="source" value="web" type="hidden">
                     <div id="autocomplete" class="svelte-ir7f0d"></div>
                     <!-- add suggestion here -->
-                   
+                    {% csrf_token %}
 
                   </form>
                   <div id="suggestion" class="svelte-ir7f0d" style="padding-top: 10px;">
@@ -233,25 +119,8 @@
             </div>
           </div>
        
-                    <!-- form -->
-                    <!-- <form action="" method="post" class=" w-full md:justify-start justify-center items-end">
-                        <div class="relative mr-4 ml-4 md:w-5 lg:w-6 xl:w-10">
-                            {% csrf_token %}
-                            <label for="hero-field" class="leading-7 text-sm text-gray-400">Url of Website</label>
-                            <center> <input type="text" id="hero-field" name="hero-field" placeholder="Eg: https://example.com"
-                                class="w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-green-900 focus:bg-transparent focus:border-green-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"></center>
-                        </div>
-                         <br>
-                        <center><button type="submit"
-                            class=" text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-lg">Extract</button></center>
-                    </form> -->
-                    <!-- form end -->
-              
+                  
     </section>
-
-
-    <!-- image container after iterating over image links   -->
-    <!-- title -->
 
 
 
@@ -263,7 +132,7 @@
 
             <div>
                 <div
-                    class="bg-white rounded-md shadow-green-100 h-full flex flex-col justify-between app-image relative transition-all duration-200 transform hover:-translate-y-2 hover:scale-105 hover:z-10 hover:shadow-xl focus-within:z-20">
+                    class="bg-white rounded-md shadow-green-100 h-full flex flex-col justify-between app-image relative transition-all duration-200 transform hover:-translate-y-2 hover:scale-105 hover:z-10 hover:shadow-xl focus-within:z-20 img_cards">
                     <div>
                         <div class="w-full relative" style="padding-bottom: 100;">
                             <div class="left-0 w-full h-full p-6 flex-1" style="height: 217px;">

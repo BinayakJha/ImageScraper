@@ -26,14 +26,12 @@ class ScrapeImages:
         file_extension = []
 
         soup = bs(requests.get(self.url).content, "html.parser")
-        # print the html
-        print(soup.prettify())
         for img in soup.find_all("img"):
             img_url = img.attrs.get("src")
             if img_url == None:
                 img_url = img.attrs.get("srcset")
                 
-            # remove "https://www.google.com/intl/ne/gmail/about/%20%20%20%20%20%20%20%20" from the img url if it is there
+           
             
 
             # if image url doesnot containt src attribute continue or skip
@@ -54,13 +52,13 @@ class ScrapeImages:
                 # if direct image links are valid, then append to the defined list
                 urls.append(img_url)
 
-                # fullimagename such as  python.png etc
+                # fullimagename
                 full_image_name = img_url.split("/")[-1]
 
-                # file name only without extension like  python etc
+                # file name only
                 filenames_list.append(full_image_name.split(".")[0][:10])
 
-                # file extension only like png, jpeg, jpg, svg
+                # file extension
                 file_extension.append(full_image_name.split(".")[-1][:10])
 
         # zipping all list and returning a queryset or object
@@ -68,7 +66,4 @@ class ScrapeImages:
         return all_list
 
 
-if __name__ == "__main__":
-    a = ScrapeImages("https://pexels.com")
-    for link, filename, fileformat in a.get_all_images():
-        print(link, filename, fileformat)
+
