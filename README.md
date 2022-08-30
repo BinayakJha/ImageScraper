@@ -36,3 +36,10 @@ If you want to acess admin panel then you should create superuser using this com
 python manage.py createsuperuser
 ```
 
+## Contribution
+
+If you want to contribute to this repo then at first you should star and fork the repo 
+
+<img src="https://user-images.githubusercontent.com/69071769/187409293-b34f536b-2218-4272-9af3-371bb9843d27.png">
+
+and then it will create a repo in your github profile linking this repo and then you can just make changes you want in your repo and make a pull request which will be reviewed and if it has no problem with the previous code it may be merged :)
