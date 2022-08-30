@@ -1,4 +1,7 @@
 ## ImageScraper
+
+<img src="https://user-images.githubusercontent.com/69071769/187409992-aecf95d1-c69c-485c-affc-c145d2b153c8.png">
+
 Scrape images of web pages just by entering url
 
 ## Installation Process
